@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { View, StyleSheet, ImageBackground } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 // import Login from "./components/Login";
-import Signup from "./components/Signup";
+// import Signup from "./components/Signup";
+import Home from "./components/Home";
 import Logo from "./tett.js";
 
 function App(props) {
@@ -19,7 +20,8 @@ function App(props) {
         <Logo style={styles.logoLeft}></Logo>
 
         {/* <Login></Login> */}
-        <Signup></Signup>
+        {/* <Signup></Signup> */}
+        <Home></Home>
       </LinearGradient>
     </View>
   );
@@ -30,7 +32,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   box: {
-    width: "100%",
+    width: 100 + "%",
     height: 100 + "%",
   },
 
