@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { View, StyleSheet, ImageBackground } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import Login from "./components/Login";
-// import Signup from "./components/Signup";
+// import Login from "./components/Login";
+import Signup from "./components/Signup";
 import Home from "./components/Home";
 import Logo from "./tett.js";
 
@@ -19,8 +19,8 @@ function App(props) {
         <Logo style={styles.logoRight}></Logo>
         <Logo style={styles.logoLeft}></Logo>
 
-        <Login></Login>
-        {/* <Signup></Signup> */}
+        {/* <Login></Login> */}
+        <Signup></Signup>
         {/* <Home></Home> */}
       </LinearGradient>
     </View>
