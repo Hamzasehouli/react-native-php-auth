@@ -9,91 +9,82 @@ import {
 } from "react-native";
 
 function Login() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [isLoading, setIsLoading] = useState(false);
 
-  const [passwordErr, setPasswordErr] = useState({ state: false, message: "" });
-  const [usernameErr, setUsernameErr] = useState({ state: false, message: "" });
+  const [err, setErr] = useState({ status: true, message: "" });
 
-  const handleSubmit = async function () {
+  /////////////////////////////////
+
+  async function handleSubmit() {
     setIsLoading(true);
-    if (username.trim() === "") {
-      setUsernameErr({
-        state: true,
-        message: "usernameError.message",
-      });
 
-      setIsLoading(false);
-    } else {
-      setUsernameErr({
-        state: false,
-        message: "",
-      });
-    }
-    if (
-      password.trim() === "" ||
-      password.trim().length < 8 ||
-      password.trim().length > 20
-    ) {
-      setPasswordErr({
-        state: true,
-        message: "passwordError.message",
-      });
-
-      setIsLoading(false);
-    } else {
-      setPasswordErr({
-        state: false,
-        message: "",
-      });
-    }
-    if (usernameErr.state && passwordErr.state) {
-      Alert.alert("Please fill the required fields");
-      setUsername("");
-      setPassword("");
-      setIsLoading(false);
-      return;
-    }
     const body = {
-      email: username,
+      email: email,
       password: password,
     };
 
-    console.log(body);
-
-    try {
-      const res = await fetch("http://172.16.1.52:8000/api/v1/auth/login", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(body),
+    if (
+      !body.email.trim() ||
+      !body.password.trim() ||
+      !body.email.trim().includes("@")
+    ) {
+      setErr({
+        status: false,
+        message: "Please fill all the required fields with valid inputs",
       });
-      if (res.ok) {
-        console.log(res.ok);
-        const data = await res.json();
-        console.log(data.message);
-      } else {
-        throw new Error(false);
-      }
-    } catch (err) {
-      console.log(err);
+      setIsLoading(false);
+      setTimeout(() => {
+        setErr({ status: true, message: "" });
+      }, 1500);
+      return;
     }
-  };
+
+    const res = await fetch(`http://172.16.1.52:8000/api/v1/auth/login`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      setErr({ status: false, message: data.message });
+      setIsLoading(false);
+      setTimeout(() => {
+        setErr({ status: true, message: "" });
+      }, 1500);
+      return;
+    }
+    setPassword("");
+    setEmail("");
+    Alert.alert("You have loged in successfully");
+
+    setIsLoading(false);
+  }
+  ///////////////////////////////////
+
+  if (!err.status) {
+    Alert.alert(err.message);
+    return <Text></Text>;
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.form}>
-        {!usernameErr.state ? null : <Text>{usernameErr.message}</Text>}
+        {/* {!usernameErr.state ? null : <Text>{usernameErr.message}</Text>} */}
         <TextInput
           keyboardType="email-address"
-          onChangeText={(val) => setUsername(val)}
+          onChangeText={(val) => setEmail(val)}
           style={styles.input}
-          placeholder="Username"
-          value={username}
+          placeholder="Email"
+          value={email}
         ></TextInput>
-        {!passwordErr.state ? null : <Text>{passwordErr.message}</Text>}
+        {/* {!passwordErr.state ? null : <Text>{passwordErr.message}</Text>} */}
         <TextInput
           secureTextEntry={true}
           keyboardType="visible-password"
