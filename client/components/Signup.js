@@ -6,9 +6,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 
-function Signup() {
+import BaseSection from "./BaseSection";
+
+function Signup({ navigation }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -77,50 +80,58 @@ function Signup() {
     return <Text></Text>;
   }
   return (
-    <View style={styles.container}>
-      <View style={styles.form}>
-        {/* {!usernameErr.state ? null : <Text>{usernameErr.message}</Text>} */}
-        <TextInput
-          keyboardType="default"
-          onChangeText={(val) => setUsername(val)}
-          placeholder="Username"
-          value={username}
-          style={styles.input}
-        ></TextInput>
-        {/* {!emailErr.state ? null : <Text>{emailErr.message}</Text>} */}
-        <TextInput
-          keyboardType="email-address"
-          onChangeText={(val) => setEmail(val)}
-          placeholder="Email"
-          value={email}
-          style={styles.input}
-        ></TextInput>
-        {/* {!passwordErr.state ? null : <Text>{passwordErr.message}</Text>} */}
-        <TextInput
-          keyboardType="visible-password"
-          onChangeText={(val) => setPassword(val)}
-          style={styles.input}
-          value={password}
-          placeholder="Password"
-        ></TextInput>
-        <TouchableOpacity
-          onPress={() => handleSubmit()}
-          style={styles.btnOutlined}
-        >
-          <Text style={{ color: "white", fontSize: 20, fontWeight: "bold" }}>
-            {isLoading ? "wait..." : "Sign up"}
-          </Text>
-        </TouchableOpacity>
-        <View style={{ flexDirection: "row", justifyContent: "center" }}>
-          <Text style={{ color: "white", fontSize: 20 }}>
-            Already registred?
-          </Text>
-          <TouchableOpacity>
-            <Text style={{ fontSize: 20, marginLeft: 6 }}>Log in</Text>
-          </TouchableOpacity>
+    <BaseSection>
+      <View style={styles.container}>
+        <View style={styles.form}>
+          {/* {!usernameErr.state ? null : <Text>{usernameErr.message}</Text>} */}
+          <TextInput
+            keyboardType="default"
+            onChangeText={(val) => setUsername(val)}
+            placeholder="Username"
+            value={username}
+            style={styles.input}
+          ></TextInput>
+          {/* {!emailErr.state ? null : <Text>{emailErr.message}</Text>} */}
+          <TextInput
+            keyboardType="email-address"
+            onChangeText={(val) => setEmail(val)}
+            placeholder="Email"
+            value={email}
+            style={styles.input}
+          ></TextInput>
+          {/* {!passwordErr.state ? null : <Text>{passwordErr.message}</Text>} */}
+          <TextInput
+            keyboardType="visible-password"
+            onChangeText={(val) => setPassword(val)}
+            style={styles.input}
+            value={password}
+            placeholder="Password"
+          ></TextInput>
+          {isLoading ? (
+            <ActivityIndicator />
+          ) : (
+            <TouchableOpacity
+              onPress={() => handleSubmit()}
+              style={styles.btnOutlined}
+            >
+              <Text
+                style={{ color: "white", fontSize: 20, fontWeight: "bold" }}
+              >
+                Sign up
+              </Text>
+            </TouchableOpacity>
+          )}
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <Text style={{ color: "white", fontSize: 20 }}>
+              Already registred?
+            </Text>
+            <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+              <Text style={{ fontSize: 20, marginLeft: 6 }}>Log in</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
+    </BaseSection>
   );
 }
 

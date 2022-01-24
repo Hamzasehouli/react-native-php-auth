@@ -6,9 +6,12 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 
-function Login() {
+import BaseSection from "./BaseSection";
+
+function Login({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -60,6 +63,7 @@ function Login() {
       }, 1500);
       return;
     }
+    console.log(data);
     setPassword("");
     setEmail("");
     Alert.alert("You have loged in successfully");
@@ -74,43 +78,53 @@ function Login() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.form}>
-        {/* {!usernameErr.state ? null : <Text>{usernameErr.message}</Text>} */}
-        <TextInput
-          keyboardType="email-address"
-          onChangeText={(val) => setEmail(val)}
-          style={styles.input}
-          placeholder="Email"
-          value={email}
-        ></TextInput>
-        {/* {!passwordErr.state ? null : <Text>{passwordErr.message}</Text>} */}
-        <TextInput
-          secureTextEntry={true}
-          keyboardType="visible-password"
-          maxLength={8}
-          onChangeText={(val) => setPassword(val)}
-          style={styles.input}
-          placeholder="Password"
-          value={password}
-        ></TextInput>
+    <BaseSection>
+      <View style={styles.container}>
+        <View style={styles.form}>
+          {/* {!usernameErr.state ? null : <Text>{usernameErr.message}</Text>} */}
+          <TextInput
+            keyboardType="email-address"
+            onChangeText={(val) => setEmail(val)}
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+          ></TextInput>
+          {/* {!passwordErr.state ? null : <Text>{passwordErr.message}</Text>} */}
+          <TextInput
+            secureTextEntry={true}
+            keyboardType="visible-password"
+            maxLength={8}
+            onChangeText={(val) => setPassword(val)}
+            style={styles.input}
+            placeholder="Password"
+            value={password}
+          ></TextInput>
 
-        <TouchableOpacity
-          onPress={() => handleSubmit()}
-          style={styles.btnOutlined}
-        >
-          <Text style={{ color: "white", fontSize: 20, fontWeight: "bold" }}>
-            {isLoading ? "wait..." : "Log in"}
-          </Text>
-        </TouchableOpacity>
-        <View style={{ flexDirection: "row", justifyContent: "center" }}>
-          <Text style={{ color: "white", fontSize: 20 }}>New to the app?</Text>
-          <TouchableOpacity>
-            <Text style={{ fontSize: 20, marginLeft: 6 }}>Sign up</Text>
-          </TouchableOpacity>
+          {isLoading ? (
+            <ActivityIndicator />
+          ) : (
+            <TouchableOpacity
+              onPress={() => handleSubmit()}
+              style={styles.btnOutlined}
+            >
+              <Text
+                style={{ color: "white", fontSize: 20, fontWeight: "bold" }}
+              >
+                Log in
+              </Text>
+            </TouchableOpacity>
+          )}
+          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+            <Text style={{ color: "white", fontSize: 20 }}>
+              New to the app?
+            </Text>
+            <TouchableOpacity onPress={() => navigation.navigate("Signup")}>
+              <Text style={{ fontSize: 20, marginLeft: 6 }}>Sign up</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
+    </BaseSection>
   );
 }
 
