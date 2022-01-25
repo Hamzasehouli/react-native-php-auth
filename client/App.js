@@ -1,14 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Text, ImageBackground } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Home from "./components/Home";
+import Tempo from "./components/Tempo";
+import Restricted from "./components/Restricted";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import { useSelector, useDispatch } from "react-redux";
+
+import { setUser } from "./store/actions/userActions";
 
 const Stack = createNativeStackNavigator();
 
 function App(props) {
+  const user = useSelector((state) => state.user);
+  const [isLoggedin, setIsloggedin] = useState();
+  const [isTempo, setIsTempo] = useState(false);
+
+  const dispatch = useDispatch();
+
   // return (
   //   <View style={styles.screen}>
   //     <LinearGradient
@@ -27,6 +40,31 @@ function App(props) {
   //     </LinearGradient>
   //   </View>
   // );
+
+  useEffect(() => {
+    setIsTempo(true);
+    setTimeout(() => {
+      setIsTempo(false);
+    }, 2000);
+    AsyncStorage.getItem("token").then((token) => {
+      if (!token) return;
+      fetch(`http://172.16.1.52:8000/api/v1/auth/protect`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ jwt: `jwt=${token}` }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          dispatch(setUser(data.email, data.isLoggedin));
+        });
+    });
+  }, []);
+  if (isTempo) {
+    return <Tempo></Tempo>;
+  }
+
   return (
     <NavigationContainer style={styles.screen}>
       <Stack.Navigator
@@ -38,17 +76,17 @@ function App(props) {
         <Stack.Screen
           options={{ title: "Home", headerShown: false }}
           name="Home"
-          component={Home}
+          component={!user.isLoggedin ? Home : Restricted}
         />
         <Stack.Screen
           options={{ title: "Signup" }}
           name="Signup"
-          component={Signup}
+          component={!user.isLoggedin ? Signup : Restricted}
         />
         <Stack.Screen
           options={{ title: "Login" }}
           name="Login"
-          component={Login}
+          component={!user.isLoggedin ? Login : Restricted}
         />
       </Stack.Navigator>
     </NavigationContainer>

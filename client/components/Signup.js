@@ -10,6 +10,7 @@ import {
 } from "react-native";
 
 import BaseSection from "./BaseSection";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function Signup({ navigation }) {
   const [username, setUsername] = useState("");
@@ -69,7 +70,10 @@ function Signup({ navigation }) {
     setUsername("");
     setPassword("");
     setEmail("");
-    Alert.alert("You have signed up successfully");
+    AsyncStorage.setItem("token", data.token).then(() => console.log("good"));
+    setTimeout(() => {
+      navigation.navigate("Home");
+    }, 1500);
 
     setIsLoading(false);
   }

@@ -9,7 +9,11 @@ import {
   ActivityIndicator,
 } from "react-native";
 
+import { useDispatch } from "react-redux";
+
 import BaseSection from "./BaseSection";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setUser } from "../store/actions/userActions";
 
 function Login({ navigation }) {
   const [email, setEmail] = useState("");
@@ -18,6 +22,8 @@ function Login({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const [err, setErr] = useState({ status: true, message: "" });
+
+  const dispatch = useDispatch();
 
   /////////////////////////////////
 
@@ -56,6 +62,7 @@ function Login({ navigation }) {
     const data = await res.json();
 
     if (!res.ok) {
+      dispatch(setUser(_, data.isLoggedin));
       setErr({ status: false, message: data.message });
       setIsLoading(false);
       setTimeout(() => {
@@ -63,12 +70,16 @@ function Login({ navigation }) {
       }, 1500);
       return;
     }
-    console.log(data);
+
     setPassword("");
     setEmail("");
-    Alert.alert("You have loged in successfully");
-
     setIsLoading(false);
+    // Alert.alert("You have loged in successfully");
+    navigation.navigate("Home");
+    AsyncStorage.setItem("token", data.token).then(() => console.log("good"));
+    dispatch(setUser(data.email, data.isLoggedin));
+    // setTimeout(() => {
+    // }, 1500);
   }
   ///////////////////////////////////
 

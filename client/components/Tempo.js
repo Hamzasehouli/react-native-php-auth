@@ -12,15 +12,15 @@ import BaseSection from "./BaseSection.js";
 
 import Wave from "../wave.js";
 
-function Home({ navigation }) {
+function Tempo({ navigation }) {
   return (
     <BaseSection>
       <View style={styles.container}>
-        <View style={styles.box}>
+        {/* <View style={styles.box}>
           <Wave style={styles.wave}></Wave>
         </View>
         <View style={{ top: "45%", marginBottom: 20 }}>
-          <Text style={styles.home}>Home</Text>
+          <Text style={styles.Tempo}>Welecome</Text>
         </View>
         <View style={{ top: "45%" }}>
           <TouchableOpacity
@@ -35,7 +35,9 @@ function Home({ navigation }) {
           >
             <Text style={{ fontSize: 20, marginLeft: 6 }}>Log in</Text>
           </TouchableOpacity>
-        </View>
+          <View></View>
+        </View> */}
+        <Text style={styles.textStyle}>Welcome</Text>
       </View>
     </BaseSection>
   );
@@ -47,6 +49,8 @@ const styles = StyleSheet.create({
     height: 100 + "%",
     // justifyContent: "center",
     width: "100%",
+    backgroundColor: "beige",
+    justifyContent: "center",
   },
   box: { position: "relative", width: "100%" },
   wave: {
@@ -70,6 +74,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     elevation: 4,
   },
+  textStyle: { fontSize: 50, color: "grey" },
 });
 
-export default Home;
+export default Tempo;

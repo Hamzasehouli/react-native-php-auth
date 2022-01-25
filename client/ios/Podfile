@@ -12,6 +12,8 @@ target 'client' do
     :hermes_enabled => false
   )
 
+  pod 'react-native-cookies', :path => '../node_modules/react-native-cookies'
+
   target 'clientTests' do
     inherit! :complete
     # Pods for testing

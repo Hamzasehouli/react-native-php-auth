@@ -9,31 +9,38 @@ import {
 } from "react-native";
 
 import BaseSection from "./BaseSection.js";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { setUser } from "../store/actions/userActions";
 import Wave from "../wave.js";
+import { useDispatch } from "react-redux";
 
-function Home({ navigation }) {
+function Restricted({ navigation }) {
+  const dispatch = useDispatch();
   return (
     <BaseSection>
       <View style={styles.container}>
         <View style={styles.box}>
           <Wave style={styles.wave}></Wave>
         </View>
-        <View style={{ top: "45%", marginBottom: 20 }}>
+        {/* <View style={{ top: "45%", marginBottom: 20 }}>
           <Text style={styles.home}>Home</Text>
+        </View> */}
+        <View style={{ top: "45%" }}>
+          <Text style={{ fontSize: 40, color: "white", marginBottom: 10 }}>
+            Welcome Hamza
+          </Text>
         </View>
         <View style={{ top: "45%" }}>
           <TouchableOpacity
-            style={{ ...styles.btnEmpty, marginBottom: 13 }}
-            onPress={() => navigation.navigate("Signup")}
-          >
-            <Text style={{ fontSize: 20, marginLeft: 6 }}>Sign up</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
             style={styles.btnEmpty}
-            onPress={() => navigation.navigate("Login")}
+            onPress={() => {
+              AsyncStorage.setItem("token", "").then(() => {
+                dispatch(setUser("", false));
+                navigation.navigate("Login");
+              });
+            }}
           >
-            <Text style={{ fontSize: 20, marginLeft: 6 }}>Log in</Text>
+            <Text style={{ fontSize: 20, marginLeft: 6 }}>Log out</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -72,4 +79,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default Restricted;
