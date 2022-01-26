@@ -11,6 +11,8 @@ import {
 
 import BaseSection from "./BaseSection";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch } from "react-redux";
+import { setUser } from "../store/actions/userActions";
 
 function Signup({ navigation }) {
   const [username, setUsername] = useState("");
@@ -20,6 +22,8 @@ function Signup({ navigation }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const [err, setErr] = useState({ status: true, message: "" });
+
+  const dispatch = useDispatch();
 
   /////////////////////////////////
 
@@ -70,12 +74,12 @@ function Signup({ navigation }) {
     setUsername("");
     setPassword("");
     setEmail("");
-    AsyncStorage.setItem("token", data.token).then(() => console.log("good"));
-    setTimeout(() => {
-      navigation.navigate("Home");
-    }, 1500);
-
     setIsLoading(false);
+    navigation.navigate("Home");
+    AsyncStorage.setItem("token", data.token).then(() => console.log("good"));
+    dispatch(setUser(data.email, data.isLoggedin));
+    // setTimeout(() => {
+    // }, 1500);
   }
   ///////////////////////////////////
 

@@ -62,7 +62,7 @@ function Login({ navigation }) {
     const data = await res.json();
 
     if (!res.ok) {
-      dispatch(setUser(_, data.isLoggedin));
+      dispatch(setUser("", data.isLoggedin));
       setErr({ status: false, message: data.message });
       setIsLoading(false);
       setTimeout(() => {

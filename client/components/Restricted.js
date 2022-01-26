@@ -12,10 +12,11 @@ import BaseSection from "./BaseSection.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setUser } from "../store/actions/userActions";
 import Wave from "../wave.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function Restricted({ navigation }) {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
   return (
     <BaseSection>
       <View style={styles.container}>
@@ -26,8 +27,8 @@ function Restricted({ navigation }) {
           <Text style={styles.home}>Home</Text>
         </View> */}
         <View style={{ top: "45%" }}>
-          <Text style={{ fontSize: 40, color: "white", marginBottom: 10 }}>
-            Welcome Hamza
+          <Text style={{ fontSize: 20, color: "white", marginBottom: 10 }}>
+            Welcome {user.email}
           </Text>
         </View>
         <View style={{ top: "45%" }}>
